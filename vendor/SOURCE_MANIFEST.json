@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-05-11",
+  "sources": [
+    {
+      "name": "Electron",
+      "source": "https://github.com/electron/electron",
+      "license": "MIT",
+      "purpose": "Desktop runtime for the Encrypt shell",
+      "strategy": "package/runtime dependency"
+    },
+    {
+      "name": "Ollama",
+      "source": "https://github.com/ollama/ollama",
+      "license": "MIT",
+      "purpose": "Local model runtime for TinyLlama",
+      "strategy": "runtime service"
+    },
+    {
+      "name": "TinyLlama",
+      "source": "https://github.com/jzhang38/TinyLlama",
+      "license": "Apache-2.0",
+      "purpose": "Local default LLM model",
+      "strategy": "model artifact fetched during bootstrap"
+    },
+    {
+      "name": "TradingView Lightweight Charts",
+      "source": "https://github.com/tradingview/lightweight-charts",
+      "license": "Apache-2.0",
+      "purpose": "Finance charting widget",
+      "strategy": "package dependency"
+    },
+    {
+      "name": "FastAPI",
+      "source": "https://github.com/fastapi/fastapi",
+      "license": "MIT",
+      "purpose": "Local backend API framework",
+      "strategy": "package dependency"
+    },
+    {
+      "name": "Qdrant",
+      "source": "https://github.com/qdrant/qdrant",
+      "license": "Apache-2.0",
+      "purpose": "Vector retrieval store",
+      "strategy": "Docker service"
+    },
+    {
+      "name": "Meilisearch",
+      "source": "https://github.com/meilisearch/meilisearch",
+      "license": "MIT",
+      "purpose": "Full-text finance search backend",
+      "strategy": "Docker service"
+    },
+    {
+      "name": "Playwright",
+      "source": "https://github.com/microsoft/playwright",
+      "license": "Apache-2.0",
+      "purpose": "End-to-end tests",
+      "strategy": "package dependency"
+    }
+  ]
+}

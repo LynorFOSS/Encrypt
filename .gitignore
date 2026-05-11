@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.vite/
+*.pyc
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.env
+.DS_Store
+apps/desktop/dist/
+apps/desktop/.vite/
+apps/**/node_modules/
+packages/**/node_modules/

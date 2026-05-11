@@ -1,0 +1,17 @@
+{
+  "extends": "./packages/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@encrypt/ui": ["packages/ui/src/index.tsx"],
+      "@encrypt/shared": ["packages/shared/src/index.ts"],
+      "@encrypt/config/*": ["packages/config/*"]
+    }
+  },
+  "include": [
+    "apps/**/*",
+    "packages/**/*",
+    "tests/**/*",
+    "scripts/**/*"
+  ]
+}
