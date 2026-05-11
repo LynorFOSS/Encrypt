@@ -19,6 +19,12 @@ git push origin v0.2.0
 
 Version format: `v{major}.{minor}.{patch}` or `v{major}.{minor}.{patch}-{prerelease}` (e.g., `v0.2.0-alpha.1`)
 
+### Auto Tagging
+
+Pushes to `main` now create an automated prerelease tag in the form `v{version}-{shortsha}`.
+For example, a commit at `v0.1.0` with short SHA `fdb5c30` becomes `v0.1.0-fdb5c30`.
+That tag then triggers the release workflow and publishes the platform builds as prereleases.
+
 ### 2. GitHub Actions Workflow
 
 When you push a version tag, the `release.yml` workflow will:

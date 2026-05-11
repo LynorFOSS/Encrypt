@@ -15,6 +15,7 @@
     "dev:renderer": "vite --config apps/desktop/vite.config.ts",
     "dev:electron": "wait-on http://localhost:5173 apps/desktop/dist/main.cjs && electron apps/desktop/dist/main.cjs",
     "build": "node scripts/build-electron.mjs && vite build --config apps/desktop/vite.config.ts",
+    "tag": "node scripts/create-tag.mjs",
     "dist": "npm run build && electron-builder -mwl --publish=never",
     "dist:win": "npm run build && electron-builder --win --publish=never",
     "dist:mac": "npm run build && electron-builder --mac --publish=never",
