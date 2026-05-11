@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "description": "Encrypt - a finance-first desktop browser and local research platform",
+  "author": "Lynor Team",
+  "main": "apps/desktop/dist/main.cjs",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -13,6 +15,10 @@
     "dev:renderer": "vite --config apps/desktop/vite.config.ts",
     "dev:electron": "wait-on http://localhost:5173 apps/desktop/dist/main.cjs && electron apps/desktop/dist/main.cjs",
     "build": "node scripts/build-electron.mjs && vite build --config apps/desktop/vite.config.ts",
+    "dist": "npm run build && electron-builder -mwl --publish=never",
+    "dist:win": "npm run build && electron-builder --win --publish=never",
+    "dist:mac": "npm run build && electron-builder --mac --publish=never",
+    "dist:linux": "npm run build && electron-builder --linux --publish=never",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . --ext .ts,.tsx,.js,.mjs",
     "test": "vitest run && python -m pytest -q",
@@ -30,6 +36,7 @@
     "concurrently": "^9.2.0",
     "cross-env": "^10.1.0",
     "electron": "^37.2.1",
+    "electron-builder": "^26.8.1",
     "esbuild": "^0.25.5",
     "eslint": "^9.29.0",
     "jsdom": "^26.1.0",
@@ -50,5 +57,65 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^3.25.67"
+  },
+  "build": {
+    "appId": "com.encrypt.app",
+    "productName": "Encrypt",
+    "directories": {
+      "output": "dist/build",
+      "buildResources": "apps/desktop/public"
+    },
+    "files": [
+      "apps/desktop/dist/**/*",
+      "apps/desktop/index.html",
+      "apps/desktop/public/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "forceCodeSigning": false,
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Encrypt"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.finance",
+      "entitlements": "infra/mac/entitlements.mac.plist",
+      "entitlementsInherit": "infra/mac/entitlements.mac.plist"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150,
+          "type": "file"
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Finance"
+    }
   }
 }
