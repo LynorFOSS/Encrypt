@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
+import nodeGlobals from "globals";
 
 export default tseslint.config(
   {
@@ -10,6 +11,9 @@ export default tseslint.config(
   {
     files: ["**/*.{ts,tsx,js,mjs}"],
     languageOptions: {
+      globals: {
+        ...nodeGlobals.node,
+      },
       parserOptions: {
         ecmaFeatures: {
           jsx: true,

@@ -1,4 +1,4 @@
-import type { AIResponse, Bookmark, Filing, Headline, PriceBar, ResearchNote, SearchResult, ShellState, TabState, Transcript, WatchlistItem, Workspace } from "./types";
+import type { AIResponse, Bookmark, Filing, PriceBar, ResearchNote, SearchResult, ShellState, Transcript, WatchlistItem } from "./types";
 
 export const demoShellState: ShellState = {
   version: 1,
