@@ -42,6 +42,11 @@ jobs:
         env:
           TAG: ${{ steps.tag.outputs.tag }}
 
+      - name: Configure git
+        run: |
+          git config --global user.email "ci@encrypt.local"
+          git config --global user.name "Encrypt CI"
+
       - name: Create and push tag
         if: steps.exists.outputs.exists != 'true'
         run: |

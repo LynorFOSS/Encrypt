@@ -5,6 +5,15 @@ export interface Tab {
   type: "dashboard" | "search" | "research" | "custom";
 }
 
+export interface TabState {
+  id: string;
+  workspaceId: string;
+  title: string;
+  url: string;
+  partition: string;
+  pinned: boolean;
+}
+
 export interface Pane {
   id: string;
   title: string;
@@ -12,41 +21,107 @@ export interface Pane {
   tabs: string[];
 }
 
+export interface Workspace {
+  id: string;
+  name: string;
+  activeTicker: string;
+}
+
+export interface Bookmark {
+  id: string;
+  title: string;
+  url: string;
+  symbols: string[];
+}
+
+export interface Headline {
+  id: string;
+  title: string;
+  source: string;
+  publishedAt: string;
+  summary: string;
+  url?: string;
+}
+
+export interface Filing {
+  id: string;
+  title: string;
+  formType: string;
+  ticker: string;
+  publishedAt: string;
+}
+
+export interface Transcript {
+  id: string;
+  title: string;
+  quarter: string;
+  ticker: string;
+}
+
+export interface PriceBar {
+  ts: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
 export interface ShellState {
-  currentWorkspace: string;
-  tabs: Tab[];
+  version: number;
+  activeWorkspaceId: string;
+  activeTabIds: [string, string?];
+  tabs: TabState[];
+  workspaces: Workspace[];
+  bookmarks: Bookmark[];
+  watchlist: WatchlistItem[];
+  notes: ResearchNote[];
+  recentQueries: string[];
+  recentActivities: string[];
+  aiDraft: string;
+  selectedTicker?: string;
+  selectedNoteId?: string;
   panes: Pane[];
-  watchlists: WatchlistItem[];
 }
 
 export interface SearchResult {
   id: string;
   title: string;
   type: "filing" | "report" | "news" | "transcript";
+  summary: string;
+  symbols: string[];
   source: string;
-  published_at: string;
+  sourceUrl: string;
+  publishedAt: string;
   relevance: number;
-  preview: string;
 }
 
 export interface WatchlistItem {
   id: string;
+  workspaceId: string;
   symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
+  label: string;
+  createdAt: string;
+  pinned?: boolean;
+  price?: number;
+  change?: number;
+  changePercent?: number;
 }
 
 export interface Note {
   id: string;
   title: string;
-  content: string;
-  created_at: string;
-  updated_at: string;
+  content?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface ResearchNote extends Note {
+  workspaceId: string;
+  body: string;
+  tags: string[];
+  sourceIds: string[];
+  updatedAt: string;
   topic?: string;
   sources?: SearchResult[];
 }
@@ -55,6 +130,6 @@ export interface AIResponse {
   id: string;
   question: string;
   answer: string;
-  sources: SearchResult[];
+  citations: string[];
   confidence: number;
 }

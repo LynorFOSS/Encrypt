@@ -84,6 +84,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
         activeWorkspaceId: state.activeWorkspaceId,
         activeTabIds: state.activeTabIds,
         tabs: state.tabs,
+        panes: state.panes,
         workspaces: state.workspaces,
         bookmarks: state.bookmarks,
         watchlist: state.watchlist,
