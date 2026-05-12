@@ -115,6 +115,19 @@ demo_search_results = [
         relevance=0.87,
         facets={"source": "report", "recency": "14d"},
     ),
+    SearchResult(
+        id="3",
+        title="Market Reaches All-Time High",
+        type="news",
+        summary="S&P 500 closes at record high following positive earnings reports.",
+        symbols=["SPY"],
+        source="Reuters",
+        source_url="https://www.reuters.com",
+        url="https://www.reuters.com/article",
+        published_at=datetime.now().isoformat(),
+        relevance=0.88,
+        facets={"source": "news", "recency": "1d"},
+    ),
 ]
 
 demo_tickers = [
