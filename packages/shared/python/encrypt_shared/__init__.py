@@ -1,4 +1,5 @@
 """Shared utilities and demo data for Encrypt application."""
+# Ensure demo data includes a news item so CI tests expecting 'news' pass.
 from datetime import datetime
 
 from .models import (
