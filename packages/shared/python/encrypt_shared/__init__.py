@@ -100,6 +100,7 @@ demo_search_results = [
         url="https://www.sec.gov/cgi-bin/browse-edgar",
         published_at=datetime.now().isoformat(),
         relevance=0.95,
+        facets={"source": "filing", "recency": "7d"},
     ),
     SearchResult(
         id="2",
@@ -112,6 +113,7 @@ demo_search_results = [
         url="https://www.bloomberg.com/article",
         published_at=datetime.now().isoformat(),
         relevance=0.87,
+        facets={"source": "report", "recency": "14d"},
     ),
 ]
 
@@ -161,6 +163,7 @@ demo_headlines = [
         url="https://www.reuters.com/article",
         published_at=datetime.now().isoformat(),
         relevance=0.92,
+        facets={"source": "news", "recency": "24h"},
     ),
     SearchResult(
         id="h2",
@@ -173,6 +176,7 @@ demo_headlines = [
         url="https://www.bloomberg.com/article",
         published_at=datetime.now().isoformat(),
         relevance=0.88,
+        facets={"source": "news", "recency": "1d"},
     ),
 ]
 
