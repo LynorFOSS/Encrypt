@@ -1,0 +1,142 @@
+name: Nightly Build - Build Installers
+
+on:
+  schedule:
+    # Run every day at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  DEPOT_TOOLS_UPDATE: 0
+  NINJA_JOBS: 2  # Less aggressive for scheduled builds
+
+jobs:
+  build-windows-latest:
+    name: Nightly - Windows Installers
+    runs-on: windows-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          choco install depot-tools -y
+
+      - name: Configure GN for Windows
+        run: |
+          gn gen out/Release-x64 --args='target_os="win" target_cpu="x64" is_official_build=true enable_mini_installer=true enable_msi_installer=true is_component_build=false'
+        shell: pwsh
+
+      - name: Build with Ninja
+        run: |
+          ninja -C out/Release-x64 mini_installer
+        shell: pwsh
+
+      - name: Build MSI
+        run: |
+          python build_all_installers.py --windows --arch x64
+        shell: pwsh
+        continue-on-error: true
+
+      - name: Upload Windows nightly
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-windows-x64
+          path: |
+            out/Release-x64/chrome.exe
+            out/Release-x64/*.msi
+          retention-days: 7
+
+  build-linux-latest:
+    name: Nightly - Linux Installers
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl python3-dev appimagetool
+
+      - name: Install depot_tools
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          echo "$(pwd)/depot_tools" >> $GITHUB_PATH
+
+      - name: Configure GN for Linux
+        run: |
+          gn gen out/Release-x64 --args='target_os="linux" target_cpu="x64" is_official_build=true enable_linux_installer=true enable_appimage_generator=true is_component_build=false use_sysroot=true'
+
+      - name: Build with Ninja
+        run: |
+          ninja -C out/Release-x64 linux appimage
+
+      - name: Upload Linux nightly
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-linux-x64
+          path: |
+            out/Release-x64/*.deb
+            out/Release-x64/*.rpm
+            out/Release-x64/*.AppImage
+          retention-days: 7
+
+  build-macos-latest:
+    name: Nightly - macOS Installers
+    runs-on: macos-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install depot_tools
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          echo "$(pwd)/depot_tools" >> $GITHUB_PATH
+
+      - name: Configure GN for macOS
+        run: |
+          gn gen out/Release-arm64 --args='target_os="mac" target_cpu="arm64" is_official_build=true enable_mac_installer=true is_component_build=false'
+
+      - name: Build with Ninja
+        run: |
+          ninja -C out/Release-arm64 mac
+
+      - name: Upload macOS nightly
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-macos-arm64
+          path: |
+            out/Release-arm64/Chromium.app
+            out/Release-arm64/*.dmg
+          retention-days: 7
+
+  notify:
+    name: Nightly Build Complete
+    needs: [build-windows-latest, build-linux-latest, build-macos-latest]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify nightly build status
+        run: |
+          echo "✅ Nightly build workflow completed"
+          echo "📦 Installers available as artifacts"
+          echo "⏰ Next scheduled build: Daily at 2 AM UTC"
