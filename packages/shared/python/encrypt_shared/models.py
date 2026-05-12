@@ -102,13 +102,18 @@ class SearchResult(BaseModel):
     
     id: str
     title: str
-    type: str  # "filing" | "report" | "news" | "transcript"
-    summary: str
-    symbols: list[str]
-    source: str
-    source_url: str = Field(alias="sourceUrl")
-    published_at: str = Field(alias="publishedAt")
-    relevance: float
+    summary: str = Field(default="")
+    source_type: str = Field(alias="sourceType", default="news")
+    symbols: list[str] = Field(default_factory=list)
+    source: str = Field(default="")
+    source_url: str = Field(alias="sourceUrl", default="")
+    url: str = Field(default="")  # Alternative name for source_url
+    published_at: str = Field(alias="publishedAt", default="")
+    type: str = Field(default="news")  # For compatibility with demo data
+    relevance: float = Field(default=0.0)
+    # Additional fields used by search
+    score: float = Field(default=0.0)
+    facets: Optional[dict[str, str]] = Field(default=None)
 
 
 class Filing(BaseModel):
@@ -117,9 +122,12 @@ class Filing(BaseModel):
     
     id: str
     title: str
-    form_type: str = Field(alias="formType")
+    form_type: str = Field(alias="formType", default="")
     ticker: str
-    published_at: str = Field(alias="publishedAt")
+    published_at: str = Field(alias="publishedAt", default="")
+    accession: str = Field(default="")
+    highlights: list[str] = Field(default_factory=list)
+    url: str = Field(default="")
 
 
 class Transcript(BaseModel):
@@ -130,6 +138,9 @@ class Transcript(BaseModel):
     title: str
     quarter: str
     ticker: str
+    snippets: list[str] = Field(default_factory=list)
+    url: str = Field(default="")
+    published_at: str = Field(alias="publishedAt", default="")
 
 
 class PriceBar(BaseModel):
@@ -161,8 +172,10 @@ class SourceDocument(BaseModel):
     
     id: str
     title: str
-    content: str
+    body: str = Field(alias="content")
+    source_type: str = Field(alias="sourceType", default="news")
+    symbols: list[str] = Field(default_factory=list)
+    published_at: str = Field(alias="publishedAt", default="")
+    url: str = Field(alias="sourceUrl", default="")
     ticker: Optional[str] = None
-    document_type: Optional[str] = Field(alias="documentType", default=None)
     created_at: Optional[str] = Field(alias="createdAt", default=None)
-    source_url: Optional[str] = Field(alias="sourceUrl", default=None)
